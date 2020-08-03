@@ -112,7 +112,7 @@ class Edit extends Component {
           state.resumeData.portfolio =doc.data() ;
           self.setState(state);
 
-
+          
       })
       .catch(function (error) {
         console.log("Error getting document:", error);
@@ -126,33 +126,20 @@ class Edit extends Component {
 
   }
 
-  onChange = (e) => {
-    const state = this.state
-    state[e.target.name] = e.target.value;
-    this.setState({details:state});
-  }
+  // onChange = (e) => {
+  //   const state = this.state
+  //   state[e.target.name] = e.target.value;
+  //   this.setState({details:state});
+  // }
 
-  onSubmit = (e) => {
-    e.preventDefault();
-
-    const { bio, contactmessage} = this.state;
-
-    const updateRef = firebase.firestore().collection('details').doc(this.state.key);
-    updateRef.set({
-      bio, 
-      contactmessage
-    }).then((docRef) => {
-      this.setState({
-        key: '',
-        bio: '', 
-        contactmessage: ''
-        
-      });
-      this.props.history.push("/show/"+this.props.match.params.id)
-    })
-    .catch((error) => {
-      console.error("Error adding document: ", error);
-    });
+  setFormData(e){
+    
+    const state = this.state ;
+    state.resumeData = e ; 
+    this.setState(state)
+    // console.log(this.state.resumeData.main)
+  // console.log(e.main)
+   this.saveAllData()
   }
 
   render() {
@@ -168,7 +155,9 @@ class Edit extends Component {
           </div>
           <div class="panel-body">
           <Form schema={this.state.schema}
-      formData={this.state.resumeData} />
+      formData={this.state.resumeData} 
+      onSubmit={e => this.setFormData(e.formData)}
+      />
 
           </div>
           </div>
